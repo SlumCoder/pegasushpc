@@ -1,7 +1,7 @@
 ----------------------------------------
 PegasusHPC is a High Performance Crawler
 ----------------------------------------
-Example:  java -Xmx4000m -jar pegaushpc.jar -t http://microsoft.com/ -nt 1000 -ipBased -max 10000
+Example:  java -Xmx4000m -jar pegaushpc.jar -t http://youtube.com/ -nt 1000 -ipBased -max 10000
 
 -----
 Usage
