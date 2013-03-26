@@ -54,7 +54,7 @@ public class Interface {
 	 */
 	public String getUsage() {
 
-		return  "Usage: $sh run.sh -t {target} -nt {#threads} -max {#URIs} [-ipBased | -domainBased]\n\n" +
+		return  "Usage: $java -Xmx4000m pegasus.jar -t {target} -nt {#threads} -max {#URIs} [-ipBased | -domainBased]\n\n" +
 				"    -t {target} Complete URI of the targeted host i.e. http://google.com" +
 				"\n    -nt {#threads} Number of threads to create. Suggested between 500-10000." +
 				"\n    -max {#URIs} Number of unique URIs to crawl." +
