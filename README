@@ -1,7 +1,7 @@
 ----------------------------------------
 PegasusHPC is a High Performance Crawler
 ----------------------------------------
-Example:  java -Xmx4000m -jar pegaushpc.jar -t http://youtube.com/ -nt 1000 -ipBased -max 10000
+Example:  java -Xmx4000m -jar pegaushpc.jar -t http://youtube.com/ -nt 1000 -ipBased -max 2000
 
 -----
 Usage
@@ -18,4 +18,5 @@ Use -h for to print this menu
 
 
 Requirements: Java 1.7
-Note: If the queue is all time to 0, it means networking I/O is bottleneck.
+Note: If the queue is all time to 0, it probably means that networking I/O is bottleneck.
+Consider adapting the number of threads and total results if you use a <4GB ram machine
