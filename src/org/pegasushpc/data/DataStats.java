@@ -23,7 +23,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.pegasushpc.web.Target;
@@ -57,10 +56,12 @@ public class DataStats {
 	 */
 	private void showStats(long time, DataStore queue) {
 		log.info("Total analysis time [" + time / 1000 + "] seconds");
-		log.info("Found [" + queue.getResults().size() + "] pages");
-		log.info("Crawling ratio of " + queue.getResults().size() * 1000
-				/ time + " URLs per second");
-		log.info("The targeted domains were");
+		log.info("Found and analyzed [" + queue.getResults().size() + "] unique pages");
+		log.info("Found other [" + queue.getQueued() + "] unique pages not processed");
+		log.info("Process ratio of " + queue.getResults().size() * 1000
+				/ time + " URIs/second");
+		log.info("Finding ratio of " + (queue.getResults().size()+queue.getQueued()) * 1000
+				/ time + " URIs/second");
 
 	}
 
@@ -72,14 +73,15 @@ public class DataStats {
 	 * @return
 	 */
 	public boolean saveResults(DataStore queue, Target target, long time) {
+		
 		File file = new File(ofile);
-
 		try {
 			file.createNewFile();
 		} catch (IOException e) {
+			log.error(e.getMessage());
 			return false;
-			// log.error(e.getMessage());
 		}
+		
 		BufferedWriter bw = null;
 		try {
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
@@ -89,8 +91,9 @@ public class DataStats {
 			bw.write("#############################################\n");
 
 			bw.write("Stats: Took[" + time / 1000 + "] secs");
-			bw.write(" to find[" + queue.getResults().size() + "] pages");
-			bw.write(" crawling ration of [" + queue.getResults().size() * 1000
+			bw.write(" to process[" + queue.getResults().size() + "] pages");
+			bw.write(" and find other[" + queue.getQueued() + "] unique pages");
+			bw.write(" crawling ration of [" + (queue.getQueued()+queue.getResults().size()) * 1000
 					/ time + "] URLs per second.\n\n");
 			bw.write("\n\n#############################################\n");
 			bw.write("Hosts Found in Attack Surface:\n");
@@ -114,38 +117,38 @@ public class DataStats {
 			bw.write("\n\n#############################################\n");
 			bw.write("List of Unique URLs:\n");
 			bw.write("#############################################\n");
-
-			synchronized (queue) {
-				for (String u : queue.getResults()) {
-					bw.write("" + u.toString() + "\n");
-				}
+			for (String u : queue.getResults()) {
+				bw.write("" + u + "\n");
 			}
-
-		/*	bw.write("\n\n#############################################\n");
+		
+			
+			
+			bw.write("\n\n#############################################\n");
 			bw.write("List of Queued URLs:\n");
 			bw.write("#############################################\n");
+			
+			String tmpRes = (String) queue.getQueue().poll();
+			while (tmpRes != null) {
+				bw.write("" + tmpRes.toString() + "\n");
+				tmpRes = (String) queue.getQueue().poll();
 
-			synchronized (queue) {
-				Iterator<String> it = queue.getQueue().iterator();
-				while (it.hasNext()) {
-					String u = it.next();
-
-					bw.write("" + u.toString() + "\n");
-
-				}
-				log.info("check out the results in ["+ofile+"].");
-			}*/
+			}
+			
+			log.info("check out the results in ["+ofile+"].");
 
 		} catch (IOException e) {
+			log.error(e.getMessage());
 			return false;
-			// log.error(e.getMessage());
 		} catch (Exception e) {
+			log.error("could not process the results " + e.getLocalizedMessage());
 			System.exit(0);
 		} finally {
 			try {
 				System.out.println("Done");
 				bw.close();
 			} catch (IOException e) {
+				log.error(e.getMessage());
+
 				return false;
 			}
 		}

@@ -19,9 +19,7 @@
 **********************************************/
 package org.pegasushpc.agents;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,13 +34,15 @@ import org.pegasushpc.web.Target;
  */
 public class Dispatcher {
 
-	private HashSet<URL> results;
+	private static Logger log = Logger.getLogger(Dispatcher.class);
+
+	/*config attrs*/
 	private Target target;
 	private final int threads;
 	private final int maxURLs;
-	private Worker w;
+
+	/*main attr*/
 	private DataStore queue;
-	private static Logger log = Logger.getLogger(Dispatcher.class);
 	
 
 	/**
@@ -88,7 +88,7 @@ public class Dispatcher {
 		ExecutorService executor = Executors.newFixedThreadPool(threads);
 		List<Runnable> list = new ArrayList<Runnable>();
 		for (int i = 0; i < threads; i++) {
-			Runnable worker = new Worker(queue, target, threads, maxURLs);
+			Runnable worker = new Worker(queue, target);
 			list.add(worker);
 			executor.execute(worker);
 		}
@@ -101,7 +101,7 @@ public class Dispatcher {
 		while (!executor.isTerminated()) {
 			log.info("[OK]Current unique URIs["+queue.getResults().size() + "] max urls["+ this.maxURLs + "] idle threads ["+queue.areSurffingReddit()+ "] URIs queued ["+queue.getQueued()+"].");
 			if (queue.getResults().size() >= this.maxURLs || (queue.areSurffingReddit() && queue.getQueued() == 0) && queue.getResults().size() == old) {
-				log.info("Time to stop!!!!");
+				log.info("Stopping!!!!");
 				executor.shutdownNow();
 				executor.shutdown();
 				break;

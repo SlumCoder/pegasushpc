@@ -39,7 +39,6 @@ public class Crawler {
 
 	private static Logger log = Logger.getLogger(Crawler.class);
 	private Parser parser;
-	private Target target;
 	private UserAgentProvider userAgent;
 	private final int tout = 30000;
 
@@ -50,7 +49,6 @@ public class Crawler {
 	public Crawler(Target t) {
 		log.setLevel(org.apache.log4j.Level.ALL);
 		parser = new Parser(t);
-		target = t;
 		userAgent = new UserAgentProvider();
 	}
 
@@ -60,18 +58,19 @@ public class Crawler {
 	 * @param u
 	 * @return
 	 */
+	@SuppressWarnings("finally")
 	public Set<String> getNewUrls(String u) {
 		Set<String> urls = new HashSet<String>();
 		BufferedReader in = null;
 		try {
 			// log.debug("Targeting [" + u + "].");
-			String results = "";
+
 			URL url = new URL(u);
 			URLConnection conn = url.openConnection();
 			conn.setConnectTimeout(tout);
 			conn.setRequestProperty("User-Agent", userAgent.getNewUserAgent());
 			in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			String page = "";
+			
 			String str;
 
 			while ((str = in.readLine()) != null) {

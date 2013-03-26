@@ -151,8 +151,10 @@ public class Pegasus {
 			throw new InvalidParameterException();
 		} else if (maxURLs == -1 && scope) {
 			log.info("Targeting ["+host.toUrl().toString()+"] with ["+workers+"]threads and crawling the whole server and targetting all subdomains");
+			maxURLs = 2147483647;
 		} else if (maxURLs == -1 && !scope) {
 			log.info("Targeting ["+host.toUrl().toString()+"] with ["+workers+"]threads and crawling the whole server and only targetting one subdomain");
+			maxURLs = 2147483647;
 		} else if (maxURLs != -1 && scope) {
 			log.info("Targeting ["+host.toUrl().toString()+"] with ["+workers+"]threads and stopping at["+maxURLs+"] results and targetting all subdomains");
 		} else {

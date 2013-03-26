@@ -29,12 +29,8 @@ import org.pegasushpc.web.Target;
 public class Worker implements Runnable {
 	private static Logger log = Logger.getLogger(Worker.class);
 
-	// cnfig
-	private int maxURLs;
-
 	// exec info
 	private Target target;
-	private int workers;
 
 	// concurrency storage
 	private DataStore sites;
@@ -44,24 +40,18 @@ public class Worker implements Runnable {
 	 * Constructor of the Worker class, initializes its attributes
 	 * @param s
 	 * @param t
-	 * @param nT
-	 * @param lock
 	 */
-	public Worker(DataStore s, Target t, int nT, int murls) {
-		initWrkr(t, nT, murls);
+	public Worker(DataStore s, Target t) {
+		initWrkr(t);
 		initStrg(s);
 	}
 	
 	/**
 	 * Sets the config attributes to its values
-	 * @param t
-	 * @param nT
 	 * @param murls
 	 */
-	private void initWrkr(Target t, int nT, int murls) {
+	private void initWrkr(Target t) {
 		this.target = t;
-		this.workers = nT;
-		this.maxURLs = murls;
 	}
 	
 	/**
@@ -78,12 +68,14 @@ public class Worker implements Runnable {
 	 * and stores the results
 	 */
 	public void run() {
-		while (!Thread.currentThread().interrupted()) {
+		Thread.currentThread();
+		while (!Thread.interrupted()) {
 			sites.surffingReddit();
 			String target = sites.next();
 			sites.picoYPala();
 			Set<String> newResults = crawler.getNewUrls(target);
 			sites.addAll(newResults);
 		}
+		log.debug("Thread "+Thread.currentThread() + " got killed, bye");
 	}
 }

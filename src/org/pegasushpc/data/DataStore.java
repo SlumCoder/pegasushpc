@@ -26,8 +26,6 @@ import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.apache.log4j.Logger;
-
 /**
  * The DataStore class is used to store temporary results
  */
@@ -38,7 +36,6 @@ public class DataStore {
 	private final int workers;
 	private int surffingReddit;
 
-	private static Logger log = Logger.getLogger(DataStore.class);
 	
 	/**
 	 * Constructor of the class, inits the necessary attributes
@@ -174,7 +171,7 @@ public class DataStore {
 	 * returns the queue of targets
 	 * @return
 	 */
-	public BlockingQueue getQueue() {
+	public BlockingQueue<String> getQueue() {
 		return this.queue;
 	}
 

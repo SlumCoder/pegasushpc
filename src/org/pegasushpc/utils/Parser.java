@@ -26,7 +26,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
 import org.pegasushpc.web.Target;
 /**
  * The Parser class parses the HTML of the target responses, seeks and
@@ -35,7 +34,7 @@ import org.pegasushpc.web.Target;
 public class Parser {
 
 	private final Target target;
-	private static Logger log = Logger.getLogger(Parser.class);
+
 	private Pattern patterns[];
 	
 	//html attributes to match in the body content
@@ -67,7 +66,7 @@ public class Parser {
 		Set<String> links = new HashSet<String>();
 		for(Pattern p : patterns) {
 			Matcher m = p.matcher(code);
-			String url = null;
+
 			if (m.find()) {
 				String newTarget = m.group(1).replace("\"","").replace("'", "");
 				//log.info("Found ["+ newTarget +"] current target was ["+cTarget+"] and crawl target ["+target.getHost()+"].");
@@ -87,7 +86,6 @@ public class Parser {
 					links.add(target);
 				}
 				}catch(Exception e) {
-					//log.error(e.getCause());
 				}
 				
 			}

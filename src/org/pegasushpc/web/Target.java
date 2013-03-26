@@ -33,9 +33,36 @@ public class Target {
 			attackSurface.add(target.getHost());
 			outOfScope = new ArrayList<String>();
 		}
+		
 		log.info("Settings: authentication["+target.getUserInfo()+"] protocol[" + target.getScheme()+ "] host["
-				+ target.getHost() + "] port[" + target.getPort() + "] path["
-				+ target.getPath() + "] scanning the whole host["+wholeHost+"].");
+				+ target.getHost() + "] port[" + getPort() + "] path["
+				+ getPath() + "] scanning the whole host["+wholeHost+"].");
+	}
+	
+	/**
+	 * Returns the port of the targeted host
+	 * @return
+	 */
+	public int getPort() {
+		
+		if ( target.getPort() == -1) {
+			return 80;
+		} else {
+			return target.getPort();
+		}
+	}
+	
+	/**
+	 * Returns the port of the targeted host
+	 * @return
+	 */
+	public String getPath() {
+		
+		if ( target.getPath() == null || target.getPath().equals("") ) {
+			return "/";
+		} else {
+			return target.getPath();
+		}
 	}
 
 	/**

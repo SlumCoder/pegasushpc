@@ -54,9 +54,10 @@ public class Interface {
 	 */
 	public String getUsage() {
 
-		return  "Usage: $sh run.sh -t {target} -nt {threads} [-ipBased | -domainBased]\n\n" +
+		return  "Usage: $sh run.sh -t {target} -nt {#threads} -max {#URIs} [-ipBased | -domainBased]\n\n" +
 				"    -t {target} Complete URI of the targeted host i.e. http://google.com" +
-				"\n    -nt {threads} Number of threads to create. Suggested between 500-10000." +
+				"\n    -nt {#threads} Number of threads to create. Suggested between 500-10000." +
+				"\n    -max {#URIs} Number of unique URIs to crawl." +
 				"\n    -[ipBased] to follow links to different domain of the same server."+
 				"\n    -[domainBased] to target a specific host or path"
 				+"\n\nUse -h for to print this menu";
@@ -68,11 +69,11 @@ public class Interface {
 	 */
 	public String getHeader() {
 
-		return "##########################################################################################\n"
-			 + "# "+desc+" - "+version+" - "+ year+"  #\n"
-			 + "##########################################################################################\n\n"
-			 + "Official Site\n"+codebase+"\n\nCommunity&Help\n"+community+"\n\n"
-			 +"##########################################################################################\n\n";		 
+		return "#####################################################################################################\n"
+			 + "# " + desc + " - " + license + " - " + version + " - " + year + "  #\n"
+			 + "#####################################################################################################\n\n"
+			 + "Official Site\n" + codebase + "\n\nCommunity&Help\n" + community + "\n\n"
+			 +"###########################v##########################################################################\n\n";		 
 	}
 }
 
