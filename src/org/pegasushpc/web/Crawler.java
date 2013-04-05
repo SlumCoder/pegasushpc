@@ -49,7 +49,7 @@ public class Crawler {
 	public Crawler(Target t) {
 		log.setLevel(org.apache.log4j.Level.ALL);
 		parser = new Parser(t);
-		userAgent = new UserAgentProvider();
+		//userAgent = new UserAgentProvider();
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class Crawler {
 			URL url = new URL(u);
 			URLConnection conn = url.openConnection();
 			conn.setConnectTimeout(tout);
-			conn.setRequestProperty("User-Agent", userAgent.getNewUserAgent());
+			conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.2; .NET CLR 1.1.4322)");
 			in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			
 			String str;

@@ -67,7 +67,7 @@ public class Parser {
 		for(Pattern p : patterns) {
 			Matcher m = p.matcher(code);
 
-			if (m.find()) {
+			while (m.find()) {
 				String newTarget = m.group(1).replace("\"","").replace("'", "");
 				//log.info("Found ["+ newTarget +"] current target was ["+cTarget+"] and crawl target ["+target.getHost()+"].");
 				try {
