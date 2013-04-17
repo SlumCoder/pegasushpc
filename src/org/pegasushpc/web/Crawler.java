@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import javax.net.ssl.HttpsURLConnection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,11 +67,17 @@ public class Crawler {
 			// log.debug("Targeting [" + u + "].");
 
 			URL url = new URL(u);
-			URLConnection conn = url.openConnection();
-			conn.setConnectTimeout(tout);
-			conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.2; .NET CLR 1.1.4322)");
-			in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			
+			if (u.startsWith("https")) {
+			    HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
+                            conn.setConnectTimeout(tout);
+                            conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.2; .NET CLR 1.1.4322)");
+			    in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			} else {
+			    URLConnection conn = url.openConnection();
+			    conn.setConnectTimeout(tout);
+			    conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.2; .NET CLR 1.1.4322)");
+			    in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			}
 			String str;
 
 			while ((str = in.readLine()) != null) {
